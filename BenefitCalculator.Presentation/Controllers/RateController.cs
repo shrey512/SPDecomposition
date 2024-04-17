@@ -12,10 +12,12 @@ namespace RateCalculator.Presentation.Controllers
     public class RateController : ControllerBase
     {
         private readonly IAgeService _ageService;
+        private readonly IDocumentGenerationService _documentGenerationService;
 
-        public RateController(IAgeService ageService)
+        public RateController(IAgeService ageService, IDocumentGenerationService documentGenerationService)
         {
             _ageService = ageService;
+            _documentGenerationService = documentGenerationService;
         }
 
         //GET: api/Rate/GetRateDeterminants
@@ -39,6 +41,23 @@ namespace RateCalculator.Presentation.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "GetRateDeterminants failed: " + ex.Message);
+            }
+        }
+
+        [HttpGet("GenerateDocument")]
+        public IActionResult GenerateDocument()
+        {
+            try
+            {
+                string filepath = "C:\\Users\\shreyansjain5\\Desktop\\Output\\NewSampleDoc";
+                _documentGenerationService.CreateDocument(filepath + ".docx");
+                _documentGenerationService.CreatePDF(filepath + ".pdf");
+                _documentGenerationService.CreateHTML(filepath + ".html");
+                return Ok($"Document successfully created at {filepath}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error generating document: {ex.Message}");
             }
         }
     }

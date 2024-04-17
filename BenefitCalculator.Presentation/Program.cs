@@ -13,6 +13,7 @@ builder.Services.AddDbContext<RateCalcDbContext>(options => options.UseSqlServer
 // Add services to the container.
 builder.Services.AddScoped<IAgeService, AgeService>();
 builder.Services.AddScoped<IBenefitService, BenefitService>();
+builder.Services.AddScoped<IDocumentGenerationService, DocumentGenerationService>();
 builder.Services.AddScoped<IRepository, Repository>();
 
 builder.Services.AddControllers();
